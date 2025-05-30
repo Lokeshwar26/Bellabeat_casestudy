@@ -25,7 +25,7 @@ Bellabeat is a wellness tech company focusing on health-focused smart devices fo
 
 <img src="imagefiles/Active minutes.png" width="500"/>
 <img src="imagefiles/Daily steps.png" width="500"/>
-<img src="imagefiles/Steps vs sleeo.png" width="500"/>
+<img src="imagefiles/Steps vs sleep.png" width="500"/>
 <img src="imagefiles/sleep duration.png" width="500"/>
 
 ## 📌 Key Insights
