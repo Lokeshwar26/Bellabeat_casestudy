@@ -1,0 +1,31 @@
+library(tidyverse)
+library(lubridate)
+library(readr)
+activity <- read_csv("mturkfitbit_export_4.12.16-5.12.16/Fitabase Data 4.12.16-5.12.16/dailyActivity_merged.csv")
+sleep <- read_csv("mturkfitbit_export_4.12.16-5.12.16/Fitabase Data 4.12.16-5.12.16/sleepDay_merged.csv")
+colnames(activity) <- make.names(colnames(activity))
+colnames(sleep) <- make.names(colnames(sleep))
+activity$ActivityDate <- as.Date(activity$ActivityDate, format = "%m/%d/%Y")
+sleep$SleepDay <- as.Date(sleep$SleepDay, format = "%m/%d/%Y")
+sum(is.na(activity))
+sum(is.na(sleep))
+merged_data <- inner_join(activity, sleep, by = c("Id" = "Id", "ActivityDate" = "SleepDay"))
+#Visualize Daily steps
+summary(merged_data$TotalSteps)
+ggplot(merged_data, aes(x = TotalSteps)) + 
+  geom_histogram(binwidth = 1000, fill = "skyblue", color = "black") + 
+  labs(title = "Distribution of Daily Steps", x = "Total Steps", y = "Count")
+# sleep duration
+summary(merged_data$TotalMinutesAsleep)
+ggplot(merged_data, aes(x = TotalMinutesAsleep / 60)) + 
+  geom_histogram(binwidth = 0.5, fill = "lightgreen", color = "black") + 
+  labs(title = "Sleep Duration", x = "Hours of Sleep", y = "Frequency")
+#sleep vs  steps
+ggplot(merged_data, aes(x = TotalMinutesAsleep / 60, y = TotalSteps)) + 
+  geom_point(color = "purple") +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Steps vs Sleep", x = "Sleep (hours)", y = "Steps")
+#active minutes
+ggplot(merged_data) +
+  geom_bar(aes(x = VeryActiveMinutes), fill = "red") +
+  labs(title = "Very Active Minutes", x = "Minutes", y = "Users")
